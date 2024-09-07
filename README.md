@@ -4,7 +4,7 @@ Este projeto √© uma API desenvolvida com **ASP.NET Core** que fornece recomenda√
 
 ## Integrantes
 - **Ruan Guedes** - RM551096
-- **Ana Beatriz** - RM552536
+- **Ana Beatriz Bento Silva** - RM552536
 
 ## Funcionalidades
 
