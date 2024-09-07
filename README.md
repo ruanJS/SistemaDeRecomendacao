@@ -66,7 +66,7 @@ Este projeto é uma API desenvolvida com **ASP.NET Core** que fornece recomenda�
      dotnet run
 
 # Estrutura do Projeto
-    ```bash
+   ```bash
       EducationAndCareerRecommendationsAPI/
       ├── Controllers/
       │   ├── UsersController.cs
@@ -85,6 +85,7 @@ Este projeto é uma API desenvolvida com **ASP.NET Core** que fornece recomenda�
       ├── Program.cs
       ├── Startup.cs
       └── appsettings.json
+   ```
 
 # Controllers
 - **UsersController:** Lida com operações relacionadas a usuários.
