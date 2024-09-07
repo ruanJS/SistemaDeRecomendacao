@@ -2,6 +2,10 @@
 
 Este projeto é uma API desenvolvida com **ASP.NET Core** que fornece recomendações personalizadas de educação e carreira para usuários. A API permite gerenciar usuários e cursos, fornecendo operações CRUD (Create, Read, Update, Delete) para ambos.
 
+## Integrantes
+- **Ruan Guedes** - RM551096
+- **Ana Beatriz** - RM552536
+
 ## Funcionalidades
 
 - **Gerenciamento de Usuários**: CRUD completo para usuários, incluindo a criação, listagem, atualização e exclusão de usuários.
