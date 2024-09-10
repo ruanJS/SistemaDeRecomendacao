@@ -66,5 +66,60 @@ namespace EducationAndCareerRecommendationsAPI.Services
         {
             return _repository.DeleteCourse(id);
         }
+
+        IEnumerable<User> IRecommendationsService.GetUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        User IRecommendationsService.GetUserById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        User IRecommendationsService.CreateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IRecommendationsService.UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IRecommendationsService.DeleteUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Course> IRecommendationsService.GetCourses()
+        {
+            throw new NotImplementedException();
+        }
+
+        Course IRecommendationsService.GetCourseById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Course IRecommendationsService.CreateCourse(Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IRecommendationsService.UpdateCourse(Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IRecommendationsService.DeleteCourse(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        object IRecommendationsService.GetRecommendations()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

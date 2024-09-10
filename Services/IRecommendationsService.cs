@@ -18,5 +18,6 @@ namespace EducationAndCareerRecommendationsAPI.Services
         Course CreateCourse(Course course);
         bool UpdateCourse(Course course);
         bool DeleteCourse(int id);
+        object GetRecommendations();
     }
 }
