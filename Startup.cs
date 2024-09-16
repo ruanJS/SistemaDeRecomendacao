@@ -48,12 +48,12 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
 
-            // Ativa o Swagger no ambiente de desenvolvimento
+            // Configura o Swagger para ser acessível em https://localhost:7111/swagger/index.html
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Education and Career Recommendations API V1");
-                c.RoutePrefix = string.Empty; // Define Swagger UI na raiz do projeto
+                c.RoutePrefix = "swagger"; // Define o Swagger para estar em /swagger/index.html
             });
         }
 

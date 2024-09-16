@@ -1,71 +1,101 @@
-﻿using EducationAndCareerRecommendationsAPI.Models;
-using EducationAndCareerRecommendationsAPI.Services;
+﻿using EducationAndCareerRecommendationsAPI.Data;
+using EducationAndCareerRecommendationsAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace EducationAndCareerRecommendationsAPI.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class CoursesController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class CoursesController : ControllerBase
+    private readonly ApplicationDbContext _context;
+
+    public CoursesController(ApplicationDbContext context)
     {
-        private readonly IRecommendationsService _recommendationsService;
+        _context = context;
+    }
 
-        public CoursesController(IRecommendationsService recommendationsService)
+    // GET: api/courses
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+    {
+        return await _context.Courses.ToListAsync();
+    }
+
+    // GET: api/courses/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Course>> GetCourse(int id)
+    {
+        var course = await _context.Courses.FindAsync(id);
+
+        if (course == null)
         {
-            _recommendationsService = recommendationsService;
+            return NotFound();
         }
 
-        // GET: api/courses
-        [HttpGet]
-        public ActionResult<IEnumerable<Course>> GetCourses()
+        return course;
+    }
+
+    // POST: api/courses
+    [HttpPost]
+    public async Task<ActionResult<Course>> PostCourse(Course course)
+    {
+        _context.Courses.Add(course);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetCourse), new { id = course.Id }, course);
+    }
+
+    // PUT: api/courses/5
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutCourse(int id, Course course)
+    {
+        if (id != course.Id)
         {
-            var courses = _recommendationsService.GetCourses();
-            return Ok(courses);
+            return BadRequest();
         }
 
-        // GET: api/courses/{id}
-        [HttpGet("{id}")]
-        public ActionResult<Course> GetCourse(int id)
+        _context.Entry(course).State = EntityState.Modified;
+
+        try
         {
-            var course = _recommendationsService.GetCourseById(id);
-            if (course == null)
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!CourseExists(id))
+            {
                 return NotFound();
-
-            return Ok(course);
+            }
+            else
+            {
+                throw;
+            }
         }
 
-        // POST: api/courses
-        [HttpPost]
-        public ActionResult<Course> CreateCourse([FromBody] Course course)
+        return NoContent();
+    }
+
+    // DELETE: api/courses/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCourse(int id)
+    {
+        var course = await _context.Courses.FindAsync(id);
+        if (course == null)
         {
-            var createdCourse = _recommendationsService.CreateCourse(course);
-            return CreatedAtAction(nameof(GetCourse), new { id = createdCourse.Id }, createdCourse);
+            return NotFound();
         }
 
-        // PUT: api/courses/{id}
-        [HttpPut("{id}")]
-        public IActionResult UpdateCourse(int id, [FromBody] Course course)
-        {
-            if (id != course.Id)
-                return BadRequest();
+        _context.Courses.Remove(course);
+        await _context.SaveChangesAsync();
 
-            var updated = _recommendationsService.UpdateCourse(course);
-            if (!updated)
-                return NotFound();
+        return NoContent();
+    }
 
-            return NoContent();
-        }
-
-        // DELETE: api/courses/{id}
-        [HttpDelete("{id}")]
-        public IActionResult DeleteCourse(int id)
-        {
-            var deleted = _recommendationsService.DeleteCourse(id);
-            if (!deleted)
-                return NotFound();
-
-            return NoContent();
-        }
+    private bool CourseExists(int id)
+    {
+        return _context.Courses.Any(e => e.Id == id);
     }
 }

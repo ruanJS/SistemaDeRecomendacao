@@ -2,12 +2,9 @@
 {
     public class Course
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int Id { get; set; } // Chave primária
+        public string Title { get; set; }
         public string Description { get; set; }
-        public string Category { get; set; }
-        public object Title { get; internal set; }
-        public object Provider { get; internal set; }
+        public string Provider { get; set; }
     }
-
 }

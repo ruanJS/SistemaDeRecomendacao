@@ -5,14 +5,14 @@ namespace EducationAndCareerRecommendationsAPI.Services
 {
     public interface IRecommendationsService
     {
-        // Métodos para Users
+        // Métodos para Usuários
         IEnumerable<User> GetUsers();
         User GetUserById(int id);
         User CreateUser(User user);
         bool UpdateUser(User user);
         bool DeleteUser(int id);
 
-        // Métodos para Courses
+        // Métodos para Cursos
         IEnumerable<Course> GetCourses();
         Course GetCourseById(int id);
         Course CreateCourse(Course course);

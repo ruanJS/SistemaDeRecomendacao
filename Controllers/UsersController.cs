@@ -1,71 +1,101 @@
-﻿using EducationAndCareerRecommendationsAPI.Models;
-using EducationAndCareerRecommendationsAPI.Services;
+﻿using EducationAndCareerRecommendationsAPI.Data;
+using EducationAndCareerRecommendationsAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace EducationAndCareerRecommendationsAPI.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class UsersController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    private readonly ApplicationDbContext _context;
+
+    public UsersController(ApplicationDbContext context)
     {
-        private readonly IRecommendationsService _recommendationsService;
+        _context = context;
+    }
 
-        public UsersController(IRecommendationsService recommendationsService)
+    // GET: api/users
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+    {
+        return await _context.Users.ToListAsync();
+    }
+
+    // GET: api/users/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<User>> GetUser(int id)
+    {
+        var user = await _context.Users.FindAsync(id);
+
+        if (user == null)
         {
-            _recommendationsService = recommendationsService;
+            return NotFound();
         }
 
-        // GET: api/users
-        [HttpGet]
-        public ActionResult<IEnumerable<User>> GetUsers()
+        return user;
+    }
+
+    // POST: api/users
+    [HttpPost]
+    public async Task<ActionResult<User>> PostUser(User user)
+    {
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+    }
+
+    // PUT: api/users/5
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutUser(int id, User user)
+    {
+        if (id != user.Id)
         {
-            var users = _recommendationsService.GetUsers();
-            return Ok(users);
+            return BadRequest();
         }
 
-        // GET: api/users/{id}
-        [HttpGet("{id}")]
-        public ActionResult<User> GetUser(int id)
+        _context.Entry(user).State = EntityState.Modified;
+
+        try
         {
-            var user = _recommendationsService.GetUserById(id);
-            if (user == null)
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!UserExists(id))
+            {
                 return NotFound();
-
-            return Ok(user);
+            }
+            else
+            {
+                throw;
+            }
         }
 
-        // POST: api/users
-        [HttpPost]
-        public ActionResult<User> CreateUser([FromBody] User user)
+        return NoContent();
+    }
+
+    // DELETE: api/users/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user == null)
         {
-            var createdUser = _recommendationsService.CreateUser(user);
-            return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
+            return NotFound();
         }
 
-        // PUT: api/users/{id}
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
-        {
-            if (id != user.Id)
-                return BadRequest();
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
 
-            var updated = _recommendationsService.UpdateUser(user);
-            if (!updated)
-                return NotFound();
+        return NoContent();
+    }
 
-            return NoContent();
-        }
-
-        // DELETE: api/users/{id}
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
-        {
-            var deleted = _recommendationsService.DeleteUser(id);
-            if (!deleted)
-                return NotFound();
-
-            return NoContent();
-        }
+    private bool UserExists(int id)
+    {
+        return _context.Users.Any(e => e.Id == id);
     }
 }

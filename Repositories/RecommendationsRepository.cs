@@ -15,7 +15,7 @@ namespace EducationAndCareerRecommendationsAPI.Repositories
             _context = context;
         }
 
-        // Implementação dos métodos para Users
+        // Implementação dos métodos para Usuários
         public IEnumerable<User> GetUsers()
         {
             return _context.Users.ToList();
@@ -35,7 +35,7 @@ namespace EducationAndCareerRecommendationsAPI.Repositories
 
         public bool UpdateUser(User user)
         {
-            var existingUser = _context.Users.Find(user.Id);
+            User existingUser = _context.Users.Find(user.Id);
             if (existingUser == null)
                 return false;
 
@@ -58,7 +58,7 @@ namespace EducationAndCareerRecommendationsAPI.Repositories
             return true;
         }
 
-        // Implementação dos métodos para Courses
+        // Implementação dos métodos para Cursos
         public IEnumerable<Course> GetCourses()
         {
             return _context.Courses.ToList();
