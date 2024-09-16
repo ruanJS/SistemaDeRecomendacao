@@ -55,7 +55,7 @@ Este projeto √© uma API desenvolvida com **ASP.NET Core** que fornece recomenda√
    ```bash
      {
       "ConnectionStrings": {
-        "DefaultConnection": "oracle+oracledb://rm551096:130904@oracle.fiap.com.br:1521/ORCL"
+        "DefaultConnection": "oracle+oracledb://seu-rm:sua-senha@oracle.fiap.com.br:1521/ORCL"
       }
     }
 
